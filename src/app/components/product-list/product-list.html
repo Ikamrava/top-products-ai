@@ -4,17 +4,38 @@
     @for (product of products(); track product.name; let i = $index) {
 
     <article class="product-article"
+        [id]="i === 0 ? 'first-product' : null"
         style="margin-bottom: 48px; padding-bottom: 36px; border-bottom: 1px solid #e5e7eb;">
 
         <!-- Editorial Header -->
-        <div style="margin-bottom: 16px;">
-            <span
-                style="display: inline-block; background: #eff6ff; color: #1d4ed8; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 4px; margin-bottom: 8px;">
-                {{ product.award }}
-            </span>
-            <h2 style="font-size: 26px; font-weight: 800; margin: 0; color: #111827; line-height: 1.2;">
-                {{ i + 1 }}. {{ product.name }}
-            </h2>
+        <div class="product-heading" style="margin-bottom: 16px;">
+            <div class="product-title">
+                <span
+                    style="display: inline-block; background: #eff6ff; color: #1d4ed8; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 4px; margin-bottom: 8px;">
+                    {{ product.award }}
+                </span>
+                <h2 style="font-size: 26px; font-weight: 800; margin: 0; color: #111827; line-height: 1.2;">
+                    {{ i + 1 }}. {{ product.name }}
+                </h2>
+                @if (product.rating !== null && product.rating !== undefined) {
+                    <p class="product-rating" [attr.aria-label]="'Rated ' + product.rating + ' out of 5'">
+                        <span aria-hidden="true">★</span>
+                        {{ product.rating }} / 5
+                        @if (product.ratingCount) {
+                            <span class="rating-count">({{ product.ratingCount }} ratings)</span>
+                        }
+                    </p>
+                }
+            </div>
+            <div class="product-price">
+                <span class="price-label">Amazon UK price</span>
+                @if (product.price) {
+                    <strong>{{ product.price }}</strong>
+                    <span class="price-note">Price may change</span>
+                } @else {
+                    <span class="price-unavailable">Unavailable</span>
+                }
+            </div>
         </div>
 
         <!-- Clean Image Stage (Prevents cropping & stretching) -->
@@ -28,6 +49,9 @@
         <p style="font-size: 16px; line-height: 1.65; color: #374151; margin-bottom: 24px;">
             {{ product.description }}
         </p>
+        @if (product.snippet) {
+            <p class="amazon-snippet"><strong>Amazon listing:</strong> {{ product.snippet }}</p>
+        }
 
         <!-- Pros and Cons Grid -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
@@ -56,9 +80,9 @@
 
         <!-- Action Buttons (Hidden in PDF) -->
         <div class="no-print" style="display: flex; gap: 12px;">
-            <a [href]="getAmazonUrl(product.name)" target="_blank" rel="noopener noreferrer"
+            <a [href]="product.amazonUrl || getAmazonUrl(product.name)" target="_blank" rel="noopener noreferrer"
                 style="flex: 2; text-align: center; padding: 12px 16px; background: #f59e0b; color: #111827; text-decoration: none; font-size: 15px; font-weight: 700; border-radius: 6px;">
-                Check Price on Amazon
+                Check Price on Amazon UK
             </a>
 
             <button (click)="printToPdf()"

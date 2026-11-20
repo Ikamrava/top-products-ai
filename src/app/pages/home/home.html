@@ -1,15 +1,53 @@
-<!-- Added a class="no-print" so the heading doesn't show in the PDF if you don't want it -->
-<h2 class="no-print">Discover the Best Products</h2>
+<main class="home-shell">
+    <section class="intro no-print" aria-labelledby="home-title">
+        <div class="intro-content">
+            <p class="eyebrow">A smarter way to shop</p>
+            <h1 id="home-title">Find your next favorite, without the rabbit hole.</h1>
+            <p class="intro-copy">
+                Tell us what you need and get a focused top-10 guide with useful highlights,
+                honest trade-offs, and links to explore your options.
+            </p>
 
-<div class="no-print">
-    <app-search-bar (search)="handleSearch($event)" />
-</div>
+            <div class="search-panel">
+                <app-search-bar [loading]="isLoading()" (search)="handleSearch($event)" />
+            </div>
 
-@if (errorMessage()) {
-<div class="no-print" style="background-color: #ffebee; color: #c62828; padding: 10px;">
-    {{ errorMessage() }}
-</div>
-}
+            <p class="example-searches">
+                Try: <span>desk lamps</span><span>carry-on luggage</span><span>coffee makers</span>
+            </p>
+        </div>
 
-<!-- Removed the (save) output listener -->
-<app-product-list [products]="products()" />
+        <section class="how-it-works" aria-labelledby="how-title">
+            <div class="section-heading">
+                <p class="eyebrow">Less scrolling, more clarity</p>
+                <h2 id="how-title">From a question to a shortlist</h2>
+            </div>
+            <div class="steps">
+                <article class="step-card">
+                    <span class="step-number" aria-hidden="true">01</span>
+                    <h3>Describe what you need</h3>
+                    <p>Start with a product category or the kind of item you have in mind.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number" aria-hidden="true">02</span>
+                    <h3>Compare the trade-offs</h3>
+                    <p>Scan a curated list with quick explanations of reasons to buy and avoid.</p>
+                </article>
+                <article class="step-card">
+                    <span class="step-number" aria-hidden="true">03</span>
+                    <h3>Keep your guide handy</h3>
+                    <p>Use the product links to explore, or save your shortlist as a PDF.</p>
+                </article>
+            </div>
+            <p class="guide-note">
+                Use the guide as a starting point, and check current details before you buy.
+            </p>
+        </section>
+    </section>
+
+    @if (errorMessage()) {
+        <p class="error-message no-print" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <app-product-list [products]="products()" />
+</main>

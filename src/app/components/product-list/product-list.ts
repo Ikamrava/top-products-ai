@@ -11,7 +11,7 @@ export class ProductList {
 
   getAmazonUrl(productName: string): string {
     const myAffiliateTag = 'your-store-tag-20';
-    return `https://www.amazon.com/s?k=${encodeURIComponent(productName)}&tag=${myAffiliateTag}`;
+    return `https://www.amazon.co.uk/s?k=${encodeURIComponent(productName)}&tag=${myAffiliateTag}`;
   }
 
   printToPdf() {

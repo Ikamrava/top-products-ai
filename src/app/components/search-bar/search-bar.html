@@ -1,6 +1,23 @@
-<div style="margin-bottom: 20px;">
-    <input #searchInput type="text" placeholder="e.g., Camping Gear" style="padding: 8px;">
-    <button (click)="search.emit(searchInput.value)" style="padding: 8px; margin-left: 5px;">
-        Find Top 10
+<div class="search-bar" [attr.aria-busy]="loading()">
+    <div class="search-field">
+        <label for="product-search">What are you shopping for?</label>
+        <input
+            #searchInput
+            id="product-search"
+            type="search"
+            placeholder="Try noise-canceling headphones"
+            [disabled]="loading()"
+            (keyup.enter)="search.emit(searchInput.value)">
+    </div>
+    <button type="button" [disabled]="loading()" (click)="search.emit(searchInput.value)">
+        @if (loading()) {
+            <span class="button-spinner" aria-hidden="true"></span>
+            Finding your top 10...
+        } @else {
+            Find my top 10
+        }
     </button>
 </div>
+@if (loading()) {
+    <p class="search-status" role="status">Building your guide. This may take a moment.</p>
+}

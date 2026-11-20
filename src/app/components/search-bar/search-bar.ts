@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   imports: [],
@@ -7,6 +7,6 @@ import { Component, output } from '@angular/core';
   templateUrl: './search-bar.html',
 })
 export class SearchBar {
-
+  loading = input(false);
   search = output<string>();
 }
