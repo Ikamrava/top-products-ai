@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+/* Normal global styles can go here */
+
+/* PRINT STYLES - Only applied during PDF generation */
+@media print {
+  /* 1. Hide interactive elements */
+  nav, input, button, .no-print {
+    display: none !important;
+  }
+
+  /* 2. Remove backgrounds and margins to save ink/space */
+  body {
+    background-color: white !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 3. Prevent page breaks in the middle of a product review */
+  article {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  /* 4. Ensure images fit nicely on a standard A4/Letter page */
+  img {
+    max-width: 100% !important;
+    max-height: 300px !important;
+    object-fit: contain;
+  }
+}

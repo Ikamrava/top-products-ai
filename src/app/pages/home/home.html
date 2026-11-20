@@ -1,0 +1,15 @@
+<!-- Added a class="no-print" so the heading doesn't show in the PDF if you don't want it -->
+<h2 class="no-print">Discover the Best Products</h2>
+
+<div class="no-print">
+    <app-search-bar (search)="handleSearch($event)" />
+</div>
+
+@if (errorMessage()) {
+<div class="no-print" style="background-color: #ffebee; color: #c62828; padding: 10px;">
+    {{ errorMessage() }}
+</div>
+}
+
+<!-- Removed the (save) output listener -->
+<app-product-list [products]="products()" />
