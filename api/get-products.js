@@ -1,34 +1,33 @@
 import Groq from 'groq-sdk';
 
-// This runs on a secure Vercel server, NOT in the user's browser!
 export default async function handler(req, res) {
   const category = req.query.category;
-  
-  // 1. Your keys are hidden safely in Vercel's Environment Variables
   const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-  const imageApiKey = process.env.IMAGE_SEARCH_API_KEY; // e.g., SerpApi or Rainforest
   
   try {
-    // 2. Get the text from Groq
+    const prompt = `Write a tech blog listicle for the top 10 ${category}. 
+    Return ONLY a JSON array with this exact format, no markdown formatting: 
+    [{
+      "name": "Product Name", 
+      "award": "Best overall",
+      "description": "A detailed 3-sentence review explaining why it is great.",
+      "pros": ["Pro 1", "Pro 2", "Pro 3"],
+      "cons": ["Con 1", "Con 2"]
+    }]`;
+
     const aiResponse = await groq.chat.completions.create({
-      messages: [{ role: 'user', content: `Top 10 ${category} as JSON array...` }],
+      messages: [{ role: 'user', content: prompt }],
       model: 'openai/gpt-oss-20b', 
     });
-    const products = JSON.parse(aiResponse.choices[0].message.content);
 
-    // 3. Loop through products and ask the Image API for the real photo
-    const productsWithImages = await Promise.all(products.map(async (product) => {
-      // Example: Fetching from a secure third-party image API
-      const imageReq = await fetch(`https://api.some-image-service.com/search?q=${product.name}&api_key=${imageApiKey}`);
-      const imageData = await imageReq.json();
-      
-      return { ...product, imageUrl: imageData.top_result_image };
-    }));
+    const rawText = aiResponse.choices[0]?.message?.content || '[]';
+    const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+    const products = JSON.parse(cleanJson);
 
-    // 4. Send the final, beautiful data down to Angular
-    res.status(200).json(productsWithImages);
+    res.status(200).json(products);
 
   } catch (error) {
+    console.error("Backend error:", error); // This logs to the Vercel console
     res.status(500).json({ error: "Failed to fetch data" });
   }
 }
