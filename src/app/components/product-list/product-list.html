@@ -1,64 +1,76 @@
-<!-- Main container styled like a blog post column -->
-<div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column;">
+<div
+    style="max-width: 780px; margin: 0 auto; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1f2937;">
 
-    <!-- Use let i = $index to get the number of the item (0, 1, 2...) -->
     @for (product of products(); track product.name; let i = $index) {
 
-    <article style="margin-bottom: 60px; padding-bottom: 40px; border-bottom: 1px solid #ddd;">
+    <article class="product-article"
+        style="margin-bottom: 48px; padding-bottom: 36px; border-bottom: 1px solid #e5e7eb;">
 
-        <!-- Large Heading with Number -->
-        <h2 style="font-size: 28px; margin-bottom: 5px; color: #111;">
-            {{ i + 1 }}. {{ product.name }}
-        </h2>
+        <!-- Editorial Header -->
+        <div style="margin-bottom: 16px;">
+            <span
+                style="display: inline-block; background: #eff6ff; color: #1d4ed8; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 4px; margin-bottom: 8px;">
+                {{ product.award }}
+            </span>
+            <h2 style="font-size: 26px; font-weight: 800; margin: 0; color: #111827; line-height: 1.2;">
+                {{ i + 1 }}. {{ product.name }}
+            </h2>
+        </div>
 
-        <!-- The "Award" (e.g., Best Overall) -->
-        <h3 style="font-size: 18px; color: #555; font-weight: normal; margin-top: 0; margin-bottom: 20px;">
-            <em>{{ product.award }}</em>
-        </h3>
+        <!-- Clean Image Stage (Prevents cropping & stretching) -->
+        <div
+            style="background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 8px; padding: 24px; margin-bottom: 20px; text-align: center;">
+            <img [src]="product.imageUrl" [alt]="product.name"
+                style="width: 100%; max-width: 450px; height: 280px; object-fit: contain; display: inline-block;">
+        </div>
 
-        <!-- Image from wikipedia -->
-        <img [src]="product.imageUrl" alt="{{ product.name }}"
-            style="width: 100%; height: auto; max-height: 400px; object-fit: cover; margin-bottom: 20px;">
-        <!-- Main Review Text -->
-        <p style="font-size: 17px; line-height: 1.6; color: #333; margin-bottom: 25px;">
+        <!-- Review Copy -->
+        <p style="font-size: 16px; line-height: 1.65; color: #374151; margin-bottom: 24px;">
             {{ product.description }}
         </p>
 
-        <!-- Pros and Cons Side-by-Side -->
-        <div style="display: flex; gap: 20px; margin-bottom: 25px;">
+        <!-- Pros and Cons Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
 
-            <div style="flex: 1; background: #f8fff9; padding: 15px; border-left: 4px solid #4CAF50;">
-                <h4 style="margin-top: 0; color: #2e7d32;">Reasons to buy</h4>
-                <ul style="margin: 0; padding-left: 20px; line-height: 1.5;">
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 16px;">
+                <h4
+                    style="margin: 0 0 10px 0; font-size: 14px; font-weight: 700; color: #166534; text-transform: uppercase; letter-spacing: 0.03em;">
+                    ✓ Reasons to buy
+                </h4>
+                <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6; color: #14532d;">
                     @for (pro of product.pros; track pro) { <li>{{ pro }}</li> }
                 </ul>
             </div>
 
-            <div style="flex: 1; background: #fff8f8; padding: 15px; border-left: 4px solid #f44336;">
-                <h4 style="margin-top: 0; color: #c62828;">Reasons to avoid</h4>
-                <ul style="margin: 0; padding-left: 20px; line-height: 1.5;">
+            <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 16px;">
+                <h4
+                    style="margin: 0 0 10px 0; font-size: 14px; font-weight: 700; color: #991b1b; text-transform: uppercase; letter-spacing: 0.03em;">
+                    ✕ Reasons to avoid
+                </h4>
+                <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6; color: #7f1d1d;">
                     @for (con of product.cons; track con) { <li>{{ con }}</li> }
                 </ul>
             </div>
 
         </div>
 
-        <!-- Big Action Buttons -->
-        <div class="no-print" style="display: flex; gap: 15px; flex-wrap: wrap;">
+        <!-- Action Buttons (Hidden in PDF) -->
+        <div class="no-print" style="display: flex; gap: 12px;">
             <a [href]="getAmazonUrl(product.name)" target="_blank" rel="noopener noreferrer"
-                style="flex: 1; text-align: center; padding: 12px; background: #ff9900; color: #000; text-decoration: none; font-size: 16px; font-weight: bold; border-radius: 4px;">
+                style="flex: 2; text-align: center; padding: 12px 16px; background: #f59e0b; color: #111827; text-decoration: none; font-size: 15px; font-weight: 700; border-radius: 6px;">
                 Check Price on Amazon
             </a>
 
-            <!-- NEW: Native Print Button -->
             <button (click)="printToPdf()"
-                style="flex: 1; padding: 12px; background: #2196F3; color: white; border: none; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer;">
-                Save as PDF
+                style="flex: 1; padding: 12px 16px; background: #1f2937; color: #ffffff; border: none; font-size: 15px; font-weight: 600; border-radius: 6px; cursor: pointer;">
+                Save Guide as PDF
             </button>
         </div>
 
     </article>
     } @empty {
-    <p style="text-align: center; color: #666; font-size: 18px;">Search for a category to generate a review article.</p>
+    <p style="text-align: center; color: #6b7280; font-size: 16px; padding: 40px 0;">
+        Search for a category above to generate a buying guide.
+    </p>
     }
 </div>
